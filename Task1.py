@@ -1,41 +1,44 @@
 import uuid
 
-class Figures():
-    def __init__(self, id, x=0, y=0):
-        self.x = x
-        self.y = y
-        self._id = id
+class Figure():
+    def __init__(self, x=0, y=0):
+        self._x = x
+        self._y = y
+        self._id = str(uuid.uuid4())
 
     def get_id(self):
         return self._id
 
+    def get_position(self):
+        return self._x, self._y
+    
     def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
-        print(f"Вы переместили фигуру {self._id} на новую позицию: ({self.x},{self.y}).")
+        self._x += dx
+        self._y += dy
+        print(f"Вы переместили фигуру {self._id} на новую позицию: ({self._x}, {self._y}).")
 
     def __str__(self):
         return f"Фигура с ID {self._id}"
 
-class Triangle(Figures):
-    def __init__(self, side_a, height):
-        super().__init__(str(uuid.uuid4()))
-        self.height = height
-        self.side_a = side_a
+class Triangle(Figure):
+    def __init__(self, side_a, height, x=0, y=0):
+        super().__init__(x, y)
+        self._height = height
+        self._side_a = side_a
 
     def area(self):
-        return 0.5 * self.height * self.side_a
-    
-class Rectangle(Figures):
-    def __init__(self, side_a, side_b):
-        super().__init__(str(uuid.uuid4()))
-        self.side_a = side_a
-        self.side_b = side_b
+        return 0.5 * self._height * self._side_a
+
+class Rectangle(Figure):
+    def __init__(self, side_a, side_b, x=0, y=0):
+        super().__init__(x, y)
+        self._side_a = side_a
+        self._side_b = side_b
 
     def area(self): 
-        return self.side_a * self.side_b
-    
-def Compare(figure1, figure2):
+        return self._side_a * self._side_b
+
+def compare(figure1: Figure, figure2: Figure) -> str:
     area1 = figure1.area()
     area2 = figure2.area()
 
@@ -51,8 +54,7 @@ rectangle = Rectangle(side_a=4, side_b=5)
 
 print(triangle)
 print(rectangle)
-
-print(Compare(triangle, rectangle))
+print(compare(triangle, rectangle))
 
 triangle.move(1, 2)
 rectangle.move(0, -1)
